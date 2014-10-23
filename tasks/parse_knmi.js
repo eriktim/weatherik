@@ -106,8 +106,10 @@ get_weather_object(-1, function(err, json) {
   db.data_knmi.save(json, function(err, saved) {
     if (err || !saved) {
       console.error('Failed saving data');
+      system.exit(1); // TODO
     } else {
       console.log('Stored in database');
+      system.exit(0); // TODO
     }
   });
 });

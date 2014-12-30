@@ -1,6 +1,6 @@
-all: snapshot
+all: update
 
-snapshot:
-	node tasks/**/*.js
+update:
+	cd lib && ./update.py
 
-.PHONY: snapshot
+.PHONY: update

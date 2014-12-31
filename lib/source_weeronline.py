@@ -50,7 +50,7 @@ class WeeronlineSource(Source):
 
     w['url'] = self.__url
     w['date'] = self.__date.strftime("%Y-%m-%d")
-    w['timestamp'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    w['url_timestamp'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     w['day'] = self.__day
 
     icons = iconRows.eq(0).find('td').eq(index).find('div')

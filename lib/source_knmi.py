@@ -45,7 +45,7 @@ class KNMISource(Source):
 
     w['url'] = self.__url
     w['date'] = self.__date.strftime("%Y-%m-%d")
-    w['timestamp'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    w['url_timestamp'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     w['day'] = self.__day
 
     w['temperature_average'] = float(rows.eq(2).find('td').eq(1).text())

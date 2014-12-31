@@ -10,9 +10,10 @@ from source import Source
 class WeeronlineSource(Source):
   """Weather source class"""
 
-  __url = 'http://www.weeronline.nl/Europa/Nederland/Eindhoven/4058591'
+  __d = None
   __date = None
   __day = None
+  __url = 'http://www.weeronline.nl/Europa/Nederland/Eindhoven/4058591'
 
 
   def __init__(self):
@@ -30,13 +31,15 @@ class WeeronlineSource(Source):
     self.__date = datetime.datetime.now() + datetime.timedelta(days=day)
     self.__day = day
 
-    d = PyQuery(url=self.__url)
-    return self.__parse(d)
+    if not self.__d:
+      self.__d = PyQuery(url=self.__url)
+
+    return self.__parse()
 
 
-  def __parse(self, d):
+  def __parse(self):
     """Parse the HTML page"""
-    container = d('.weatherforecast.FiveDays')
+    container = self.__d('.weatherforecast.FiveDays')
     rows = container.find('.row_forecast')
     iconRows = container.find('.row_weathericons')
     ratingRows = container.find('.row_weathernumbers')

@@ -11,9 +11,10 @@ from source import Source
 class YrSource(Source):
   """Weather source class"""
 
-  __url = 'http://www.yr.no/place/Netherlands/North_Brabant/Eindhoven/long.html'
+  __d = None
   __date = None
   __day = None
+  __url = 'http://www.yr.no/place/Netherlands/North_Brabant/Eindhoven/long.html'
 
 
   def __init__(self):
@@ -28,13 +29,15 @@ class YrSource(Source):
     self.__date = datetime.datetime.now() + datetime.timedelta(days=day)
     self.__day = day
 
-    d = PyQuery(url=self.__url)
-    return self.__parse(d)
+    if not self.__d:
+      self.__d = PyQuery(url=self.__url)
+
+    return self.__parse()
 
 
-  def __parse(self, d):
+  def __parse(self):
     """Parse the HTML page"""
-    rows = d('table.yr-table-longterm-detailed > tr')
+    rows = self.__d('table.yr-table-longterm-detailed > tr')
     
     r = 4 * (self.__day - 1)
 

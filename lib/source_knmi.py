@@ -10,8 +10,9 @@ class KNMISource(Source):
   """Weather source class"""
 
   __baseUrl = 'http://www.knmi.nl/klimatologie/daggegevens/index.cgi?station=370'
-  __url = None
+  __d = None
   __date = None
+  __url = None
 
 
   def __init__(self):
@@ -29,13 +30,14 @@ class KNMISource(Source):
     self.__date = date
     self.__url = url
 
-    d = PyQuery(url=url)
-    return self.__parse(d)
+    self.__d = PyQuery(url=url)
+
+    return self.__parse()
 
 
-  def __parse(self, d):
+  def __parse(self):
     """Parse the HTML page"""
-    rows = d('#printable > table > tr')
+    rows = self.__d('#printable > table > tr')
     
     w = {}
 

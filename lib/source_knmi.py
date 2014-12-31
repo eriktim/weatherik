@@ -50,7 +50,7 @@ class KNMISource(Source):
     w['temperature']['minimum'] = float(rows.eq(4).find('td').eq(1).text())
 
     w['rain'] = {}
-    w['rain']['amount'] = float(rows.eq(2).find('td').eq(6).text())
+    w['rain']['amount'] = float(rows.eq(2).find('td').eq(6).text().lstrip('<'))
     w['rain']['duration'] = float(rows.eq(3).find('td').eq(6).text())
 
     w['sky'] = {}

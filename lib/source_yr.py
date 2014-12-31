@@ -3,6 +3,7 @@
 
 import ast
 import datetime
+import re
 import sys
 from pyquery import PyQuery
 from source import Source
@@ -39,28 +40,28 @@ class YrSource(Source):
 
     w = {}
 
-    w['metadata'] = {}
-    w['metadata']['url'] = self.__url
-    w['metadata']['date'] = self.__date.strftime("%Y-%m-%d")
-    w['metadata']['today'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    w['url'] = self.__url
+    w['date'] = self.__date.strftime("%Y-%m-%d")
+    w['timestamp'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    w['temperature'] = {}
-    w['temperature']['average'] = []
+    for ri in range(4):
+      val = rows.eq(r + ri).find('td').eq(1).find('img').attr('src')
+      w['icon_' + str(ri + 1)] = val
+
     for ri in range(4):
       val = rows.eq(r + ri).find('td').eq(2).text()
       val = val.encode('ascii','ignore') # strip the °-sign
-      w['temperature']['average'].append(int(val))
+      w['temperature_average_' + str(ri + 1)] = int(val)
 
-    w['rain'] = {}
-    w['rain']['amount'] = []
     for ri in range(4):
       val = rows.eq(r + ri).find('td').eq(3).text()
       val = val.rstrip('m') # strip the 'mm'
-      w['rain']['amount'].append(float(val))
+      w['rain_amount_' + str(ri + 1)] = float(val)
 
-    w['visual'] = []
     for ri in range(4):
-      val = rows.eq(r + ri).find('td').eq(1).find('img').attr('src')
-      w['visual'].append(val)
+      val = rows.eq(r + ri).find('td').eq(4).attr('title')
+      match = re.search('([0-9]+) m/s from ([a-z]+)', val)
+      w['wind_speed_' + str(ri + 1)] = match.group(1)
+      w['wind_direction_' + str(ri + 1)] = match.group(2)
 
     return w

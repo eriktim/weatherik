@@ -39,37 +39,30 @@ class KNMISource(Source):
     
     w = {}
 
-    w['metadata'] = {}
-    w['metadata']['url'] = self.__url
-    w['metadata']['date'] = self.__date.strftime("%Y-%m-%d")
-    w['metadata']['today'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    w['url'] = self.__url
+    w['date'] = self.__date.strftime("%Y-%m-%d")
+    w['timestamp'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    w['temperature'] = {}
-    w['temperature']['average'] = float(rows.eq(2).find('td').eq(1).text())
-    w['temperature']['maximum'] = float(rows.eq(3).find('td').eq(1).text())
-    w['temperature']['minimum'] = float(rows.eq(4).find('td').eq(1).text())
+    w['temperature_average'] = float(rows.eq(2).find('td').eq(1).text())
+    w['temperature_maximum'] = float(rows.eq(3).find('td').eq(1).text())
+    w['temperature_minimum'] = float(rows.eq(4).find('td').eq(1).text())
 
-    w['rain'] = {}
-    w['rain']['amount'] = float(rows.eq(2).find('td').eq(6).text().lstrip('<'))
-    w['rain']['duration'] = float(rows.eq(3).find('td').eq(6).text())
+    w['rain_amount'] = float(rows.eq(2).find('td').eq(6).text().lstrip('<'))
+    w['rain_duration'] = float(rows.eq(3).find('td').eq(6).text())
 
-    w['sky'] = {}
-    w['sky']['sunshine'] = {}
-    w['sky']['sunshine']['duration'] = float(rows.eq(7).find('td').eq(1).text())
-    w['sky']['sunshine']['relative'] = int(rows.eq(8).find('td').eq(1).text())
-    w['sky']['coverage'] = int(rows.eq(9).find('td').eq(1).text())
-    w['sky']['visibiliy'] = float(rows.eq(11).find('td').eq(1).text())
+    w['sunshine_duration'] = float(rows.eq(7).find('td').eq(1).text())
+    w['sunshine_relative'] = int(rows.eq(8).find('td').eq(1).text())
 
-    w['wind'] = {}
-    w['wind']['average'] = float(rows.eq(7).find('td').eq(6).text())
-    w['wind']['maximum'] = {}
-    w['wind']['maximum']['average'] = float(rows.eq(8).find('td').eq(6).text())
-    w['wind']['maximum']['absolute'] = float(rows.eq(9).find('td').eq(6).text())
-    w['wind']['direction'] = int(rows.eq(11).find('td').eq(6).text())
+    w['sky_coverage'] = int(rows.eq(9).find('td').eq(1).text())
+    w['sky_visibiliy'] = float(rows.eq(11).find('td').eq(1).text())
 
-    w['atmosphere'] = {}
-    w['atmosphere']['humidity'] = int(rows.eq(14).find('td').eq(1).text())
-    w['atmosphere']['pressure'] = float(rows.eq(14).find('td').eq(6).text())
+    w['wind_speed_average'] = float(rows.eq(7).find('td').eq(6).text())
+    w['wind_speed_maximum_average'] = float(rows.eq(8).find('td').eq(6).text())
+    w['wind_speed_maximum'] = float(rows.eq(9).find('td').eq(6).text())
+    w['wind_direction'] = int(rows.eq(11).find('td').eq(6).text())
+
+    w['atmosphere_humidity'] = int(rows.eq(14).find('td').eq(1).text())
+    w['atmosphere_pressure'] = float(rows.eq(14).find('td').eq(6).text())
 
 
     return w

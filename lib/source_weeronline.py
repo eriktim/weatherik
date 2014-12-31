@@ -39,33 +39,46 @@ class WeeronlineSource(Source):
     container = d('.weatherforecast.FiveDays')
     rows = container.find('.row_forecast')
     iconRows = container.find('.row_weathericons')
+    ratingRows = container.find('.row_weathernumbers')
     
     index = self.__day + 1
 
     w = {}
 
-    w['metadata'] = {}
-    w['metadata']['url'] = self.__url
-    w['metadata']['date'] = self.__date.strftime("%Y-%m-%d")
-    w['metadata']['today'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    w['url'] = self.__url
+    w['date'] = self.__date.strftime("%Y-%m-%d")
+    w['timestamp'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    w['temperature'] = {}
-    val = rows.eq(0).find('td').eq(index).text()
-    val = val.encode('ascii','ignore') # strip the °-sign
-    w['temperature']['minimum'] = int(val)
-    val = rows.eq(1).find('td').eq(index).text()
-    val = val.encode('ascii','ignore') # strip the °-sign
-    w['temperature']['maximum'] = int(val)
-
-    w['rain'] = {}
-    val = rows.eq(4).find('td').eq(index).text()
-    val = val.rstrip('m') # strip the 'mm'
-    w['rain']['amount'] = float(val)
-
-    w['visual'] = []
     icons = iconRows.eq(0).find('td').eq(index).find('div')
     for i in range(3):
       val = icons.eq(i).attr('class')
-      w['visual'].append(val)
+      w['icon_' + str(i + 1)] = val
+
+    val = rows.eq(0).find('td').eq(index).text()
+    val = val.encode('ascii', 'ignore') # strip the °-sign
+    w['temperature_minimum'] = int(val)
+
+    val = rows.eq(1).find('td').eq(index).text()
+    val = val.encode('ascii', 'ignore') # strip the °-sign
+    w['temperature_maximum'] = int(val)
+
+    val = rows.eq(2).find('td').eq(index).text()
+    val = val.rstrip('/') # strip the '/'
+    w['wind_force'] = int(val)
+
+    val = rows.eq(2).find('td').eq(index).find('.windImageDiv.darkImage > div').attr('class')
+    val = val.replace('wind_icon_small_', '').replace('_xs darkImage', '')
+    w['wind_direction'] = val
+
+    val = rows.eq(3).find('td').eq(index).text()
+    val = val.rstrip('%') # strip the '%'
+    w['rain_percentage'] = int(val)
+
+    val = rows.eq(4).find('td').eq(index).text()
+    val = val.rstrip('m') # strip the 'mm'
+    w['rain_amount'] = float(val)
+
+    val = ratingRows.eq(0).find('td').eq(index).text()
+    w['rating'] = int(val)
 
     return w

@@ -46,6 +46,7 @@ class YrSource(Source):
     w['url'] = self.__url
     w['date'] = self.__date.strftime("%Y-%m-%d")
     w['timestamp'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    w['day'] = self.__day
 
     for ri in range(4):
       val = rows.eq(r + ri).find('td').eq(1).find('img').attr('src')

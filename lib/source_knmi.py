@@ -12,6 +12,7 @@ class KNMISource(Source):
   __baseUrl = 'http://www.knmi.nl/klimatologie/daggegevens/index.cgi?station=370'
   __d = None
   __date = None
+  __day = None
   __url = None
 
 
@@ -28,6 +29,7 @@ class KNMISource(Source):
     url = self.__get_url(date)
 
     self.__date = date
+    self.__day = day
     self.__url = url
 
     self.__d = PyQuery(url=url)
@@ -44,6 +46,7 @@ class KNMISource(Source):
     w['url'] = self.__url
     w['date'] = self.__date.strftime("%Y-%m-%d")
     w['timestamp'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    w['day'] = self.__day
 
     w['temperature_average'] = float(rows.eq(2).find('td').eq(1).text())
     w['temperature_maximum'] = float(rows.eq(3).find('td').eq(1).text())

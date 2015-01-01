@@ -5,6 +5,7 @@ import ast
 import datetime
 import re
 import sys
+import traceback
 from pyquery import PyQuery
 from source import Source
 
@@ -23,7 +24,7 @@ class YrSource(Source):
 
   def get_weather(self, day):
     if day < 1 or day > 9:
-      sys.stderr.write('`day` must be an integer between 1 and 9')
+      sys.stderr.write('`day` must be an integer between 1 and 9\n')
       return None
 
     self.__date = datetime.datetime.now() + datetime.timedelta(days=day)
@@ -32,7 +33,14 @@ class YrSource(Source):
     if not self.__d:
       self.__d = PyQuery(url=self.__url)
 
-    return self.__parse()
+    data = None
+    try:
+      data = self.__parse()
+    except:
+      sys.stderr.write(self.__d.outerHtml())
+      sys.stderr.write('\n\n')
+      traceback.print_exc()
+    return data
 
 
   def __parse(self):

@@ -3,6 +3,7 @@
 
 import datetime
 import sys
+import traceback
 from pyquery import PyQuery
 from source import Source
 
@@ -22,7 +23,7 @@ class KNMISource(Source):
 
   def get_weather(self, day):
     if day >= 0:
-      sys.stderr.write('`day` must be an integer and less than 0')
+      sys.stderr.write('`day` must be an integer and less than 0\n')
       return None
 
     date = datetime.datetime.now() + datetime.timedelta(days=day)
@@ -34,7 +35,14 @@ class KNMISource(Source):
 
     self.__d = PyQuery(url=url)
 
-    return self.__parse()
+    data = None
+    try:
+      data = self.__parse()
+    except:
+      sys.stderr.write(self.__d.outerHtml())
+      sys.stderr.write('\n\n')
+      traceback.print_exc()
+    return data
 
 
   def __parse(self):

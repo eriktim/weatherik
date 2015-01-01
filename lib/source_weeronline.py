@@ -4,6 +4,7 @@
 import ast
 import datetime
 import sys
+import traceback
 from pyquery import PyQuery
 from source import Source
 
@@ -22,10 +23,10 @@ class WeeronlineSource(Source):
 
   def get_weather(self, day):
     if day < 0 or day > 13:
-      sys.stderr.write('`day` must be an integer between 0 and 13')
+      sys.stderr.write('`day` must be an integer between 0 and 13\n')
       return None
     if day > 3:
-      sys.stderr.write('`day` >= 4 not yet supported')
+      sys.stderr.write('`day` >= 4 not yet supported\n')
       return None
 
     self.__date = datetime.datetime.now() + datetime.timedelta(days=day)
@@ -34,7 +35,14 @@ class WeeronlineSource(Source):
     if not self.__d:
       self.__d = PyQuery(url=self.__url)
 
-    return self.__parse()
+    data = None
+    try:
+      data = self.__parse()
+    except:
+      sys.stderr.write(self.__d.outerHtml())
+      sys.stderr.write('\n\n')
+      traceback.print_exc()
+    return data
 
 
   def __parse(self):

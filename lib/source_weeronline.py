@@ -60,15 +60,15 @@ class WeeronlineSource(Source):
 
     val = rows.eq(0).find('td').eq(index).text()
     val = val.encode('ascii', 'ignore') # strip the °-sign
-    w['temperature_minimum'] = int(val)
+    w['temperature_minimum'] = self.__numeric(val)
 
     val = rows.eq(1).find('td').eq(index).text()
     val = val.encode('ascii', 'ignore') # strip the °-sign
-    w['temperature_maximum'] = int(val)
+    w['temperature_maximum'] = self.__numeric(val)
 
     val = rows.eq(2).find('td').eq(index).text()
     val = val.rstrip('/') # strip the '/'
-    w['wind_force'] = int(val)
+    w['wind_force'] = self.__numeric(val)
 
     val = rows.eq(2).find('td').eq(index).find('.windImageDiv.darkImage > div').attr('class')
     val = val.replace('wind_icon_small_', '').replace('_xs darkImage', '')
@@ -76,13 +76,20 @@ class WeeronlineSource(Source):
 
     val = rows.eq(3).find('td').eq(index).text()
     val = val.rstrip('%') # strip the '%'
-    w['rain_percentage'] = int(val)
+    w['rain_percentage'] = self.__numeric(val)
 
     val = rows.eq(4).find('td').eq(index).text()
     val = val.rstrip('m') # strip the 'mm'
-    w['rain_amount'] = float(val)
+    w['rain_amount'] = self.__numeric(val)
 
     val = ratingRows.eq(0).find('td').eq(index).text()
-    w['rating'] = int(val)
+    w['rating'] = self.__numeric(val)
 
     return w
+
+
+  def __numeric(self, x):
+    x = x.replace(',', '.')
+    if not x:
+      return 0
+    return float(x) if '.' in x else int(x)

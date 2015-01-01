@@ -48,26 +48,26 @@ class KNMISource(Source):
     w['url_timestamp'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     w['day'] = self.__day
 
-    w['temperature_average'] = float(rows.eq(2).find('td').eq(1).text())
-    w['temperature_maximum'] = float(rows.eq(3).find('td').eq(1).text())
-    w['temperature_minimum'] = float(rows.eq(4).find('td').eq(1).text())
+    w['temperature_average'] = self.__numeric(rows.eq(2).find('td').eq(1).text())
+    w['temperature_maximum'] = self.__numeric(rows.eq(3).find('td').eq(1).text())
+    w['temperature_minimum'] = self.__numeric(rows.eq(4).find('td').eq(1).text())
 
-    w['rain_amount'] = float(rows.eq(2).find('td').eq(6).text().lstrip('<'))
-    w['rain_duration'] = float(rows.eq(3).find('td').eq(6).text())
+    w['rain_amount'] = self.__numeric(rows.eq(2).find('td').eq(6).text().lstrip('<-'))
+    w['rain_duration'] = self.__numeric(rows.eq(3).find('td').eq(6).text().lstrip('-'))
 
-    w['sunshine_duration'] = float(rows.eq(7).find('td').eq(1).text())
-    w['sunshine_relative'] = int(rows.eq(8).find('td').eq(1).text())
+    w['sunshine_duration'] = self.__numeric(rows.eq(7).find('td').eq(1).text())
+    w['sunshine_relative'] = self.__numeric(rows.eq(8).find('td').eq(1).text())
 
-    w['sky_coverage'] = int(rows.eq(9).find('td').eq(1).text())
-    w['sky_visibiliy'] = float(rows.eq(11).find('td').eq(1).text())
+    w['sky_coverage'] = self.__numeric(rows.eq(9).find('td').eq(1).text())
+    w['sky_visibiliy'] = self.__numeric(rows.eq(11).find('td').eq(1).text())
 
-    w['wind_speed_average'] = float(rows.eq(7).find('td').eq(6).text())
-    w['wind_speed_maximum_average'] = float(rows.eq(8).find('td').eq(6).text())
-    w['wind_speed_maximum'] = float(rows.eq(9).find('td').eq(6).text())
-    w['wind_direction'] = int(rows.eq(11).find('td').eq(6).text())
+    w['wind_speed_average'] = self.__numeric(rows.eq(7).find('td').eq(6).text())
+    w['wind_speed_maximum_average'] = self.__numeric(rows.eq(8).find('td').eq(6).text())
+    w['wind_speed_maximum'] = self.__numeric(rows.eq(9).find('td').eq(6).text())
+    w['wind_direction'] = self.__numeric(rows.eq(11).find('td').eq(6).text())
 
-    w['atmosphere_humidity'] = int(rows.eq(14).find('td').eq(1).text())
-    w['atmosphere_pressure'] = float(rows.eq(14).find('td').eq(6).text())
+    w['atmosphere_humidity'] = self.__numeric(rows.eq(14).find('td').eq(1).text())
+    w['atmosphere_pressure'] = self.__numeric(rows.eq(14).find('td').eq(6).text())
 
 
     return w
@@ -87,3 +87,10 @@ class KNMISource(Source):
       url += '&' + key + '=' + str(value)
 
     return url
+
+
+  def __numeric(self, x):
+    x = x.rstrip('-')
+    if not x:
+      return 0
+    return float(x) if '.' in x else int(x)

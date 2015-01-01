@@ -1,4 +1,5 @@
 import psycopg2
+import re
 
 class Database(object):
 
@@ -27,9 +28,10 @@ class Database(object):
     if not table or not data:
       return False
 
+    tableSafe = re.sub(r'\W+', '', table)
     holders = ["%s" for x in range(len(data))]
 
-    query = "INSERT INTO " + table + " (" + ','.join(data.keys()) + ") VALUES (" + ','.join(holders) + ");"
+    query = "INSERT INTO " + tableSafe + " (" + ','.join(data.keys()) + ") VALUES (" + ','.join(holders) + ");"
     self.__cursor.execute(query, data.values())
     self.__conn.commit()
 

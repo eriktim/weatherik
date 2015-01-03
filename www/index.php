@@ -31,7 +31,7 @@ $xmax = max($x) + $grace;
 
 $g = new Graph(600, 400);
 $g->SetMargin(50, 20, 40, 30);
-$g->title->Set("Estimated and actual temperatures");
+$g->title->Set("Predicted and actual temperatures");
 $g->SetMarginColor('lightblue');
 
 $g->img->SetAntiAliasing();

@@ -39,7 +39,8 @@ class WeeronlineSource(Source):
     try:
       data = self.__parse()
     except:
-      sys.stderr.write(self.__d.outerHtml())
+      html = self.__d.outerHtml().encode('ascii', 'replace')
+      sys.stderr.write(html)
       sys.stderr.write('\n\n')
       traceback.print_exc()
     return data

@@ -65,7 +65,7 @@ $xmax = max($x) + $grace;
 
 $g = new Graph(600, 400);
 $g->SetMargin(50, 20, 40, 30);
-$g->title->Set("Predicted and actual temperatures");
+$g->title->Set("Predicted and actual temperatures [°C]");
 $g->SetMarginColor('lightblue');
 
 $g->img->SetAntiAliasing();
@@ -173,7 +173,7 @@ $mgraph->Add($g, 5, 5);
 
 $g = new Graph(600, 400);
 $g->SetMargin(50, 20, 40, 30);
-$g->title->Set("Predicted and actual amount of rain");
+$g->title->Set("Predicted and actual amount of rain [mm]");
 $g->SetMarginColor('lightblue');
 
 $plot = new BarPlot($yRain, $x);
@@ -226,8 +226,12 @@ $lplot->mark->SetColor('green');
 $lplot->mark->SetFillColor('green');
 $g->Add($lplot);
 
+$tickPositions = array(0, 45, 90, 135, 180, 225, 270, 315, 360);
+$tickLabels = array('N\'', 'NO', 'O', 'ZO', 'Z', 'ZW', 'W', 'NW', 'N');
+
 $g->SetScale('intlin', 0, 360, $xmin, $xmax);
 $g->xaxis->SetLabelFormatString('d-m', true);
+$g->yaxis->SetMajTickPositions($tickPositions, $tickLabels);
 
 $mgraph->Add($g, 5, 810);
 $mgraph->Stroke();

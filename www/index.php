@@ -179,7 +179,7 @@ $g->SetMarginColor('lightblue');
 $plot = new BarPlot($yRain, $x);
 $g->Add($plot);
 $plot->SetAlign('center');
-$plot->SetAbsWidth(32);
+$plot->SetAbsWidth(16);
 $plot->SetLegend('measured (KNMI)');
 $plot->SetColor('blue');
 

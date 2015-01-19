@@ -59,7 +59,7 @@ foreach ($rowsKnmi as $row) {
   $yWindDirection[] = (int) $row['wind_direction'];
 }
 
-$grace = 400000;
+$grace = 4000;
 $xmin = min($x) - $grace;
 $xmax = max($x) + $grace;
 

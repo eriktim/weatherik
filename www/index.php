@@ -63,7 +63,7 @@ $grace = 4000;
 $xmin = min($x) - $grace;
 $xmax = max($x) + $grace;
 
-$g = new Graph(600, 400);
+$g = new Graph(1280, 720);
 $g->SetMargin(50, 20, 40, 30);
 $g->title->Set("Predicted and actual temperatures [°C]");
 $g->SetMarginColor('lightblue');
@@ -171,7 +171,7 @@ $g->xaxis->SetLabelFormatString('d-m', true);
 $mgraph = new MGraph();
 $mgraph->Add($g, 5, 5);
 
-$g = new Graph(600, 400);
+$g = new Graph(1280, 720);
 $g->SetMargin(50, 20, 40, 30);
 $g->title->Set("Predicted and actual amount of rain [mm]");
 $g->SetMarginColor('lightblue');
@@ -200,9 +200,9 @@ $g->Add($lplot);
 $g->SetScale('intlin', 0, $yRainMax, $xmin, $xmax);
 $g->xaxis->SetLabelFormatString('d-m', true);
 
-$mgraph->Add($g, 5, 405);
+$mgraph->Add($g, 5, 725);
 
-$g = new Graph(600, 400);
+$g = new Graph(1280, 720);
 $g->SetMargin(50, 20, 40, 30);
 $g->title->Set("Predicted and actual wind direction");
 $g->SetMarginColor('lightblue');
@@ -233,5 +233,5 @@ $g->SetScale('intlin', 0, 360, $xmin, $xmax);
 $g->xaxis->SetLabelFormatString('d-m', true);
 $g->yaxis->SetMajTickPositions($tickPositions, $tickLabels);
 
-$mgraph->Add($g, 5, 810);
+$mgraph->Add($g, 5, 1450);
 $mgraph->Stroke();

@@ -143,10 +143,11 @@ foreach ($rowsYr as $row) {
   $x1[] = strtotime($row['date']);
   $y1[] = (float) $row['temperature_average'];
   $y1Rain[] = (float) $row['rain_amount'];
-  $y1WindDirection[] = (windDirectionToAngle1($row['wind_direction_1']) +
+  $y1WindDirection[] = ((4 * 360 +
+      windDirectionToAngle1($row['wind_direction_1']) +
       windDirectionToAngle1($row['wind_direction_2']) +
       windDirectionToAngle1($row['wind_direction_3']) +
-      windDirectionToAngle1($row['wind_direction_4'])) / 4.0;
+      windDirectionToAngle1($row['wind_direction_4'])) / 4.0) % 360;
 }
 
 $lplot = new ScatterPlot($y1, $x1);

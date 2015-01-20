@@ -37,6 +37,7 @@ function windDirectionToAngle2($direction) {
 
 $db = new PDO('pgsql:dbname=weatherik;host=localhost;user=weatherik_user;password=weatherik_password');
 
+$days = 1;
 
 // knmi
 
@@ -61,7 +62,7 @@ foreach ($rowsKnmi as $row) {
 
 $grace = 60 * 60 * 6;
 $xmin = min($x) - $grace;
-$xmax = max($x) + $grace;
+$xmax = max($x) + $grace + ($days + 1) * 60 * 60 * 24;
 
 $g = new Graph(1280, 720);
 $g->SetMargin(50, 20, 40, 30);
@@ -88,7 +89,7 @@ $lplot->SetLegend('average (KNMI)');
 
 // Weeronline
 
-$qYr = $db->prepare("SELECT date, temperature_minimum, temperature_maximum, rain_amount, wind_direction FROM source_weeronline WHERE day=1 AND date > (CURRENT_DATE - INTERVAL '30 days') ORDER BY date ASC;");
+$qYr = $db->prepare("SELECT date, temperature_minimum, temperature_maximum, rain_amount, wind_direction FROM source_weeronline WHERE day=$days AND date > (CURRENT_DATE - INTERVAL '30 days') ORDER BY date ASC;");
 $qYr->execute();
 $rowsYr = $qYr->fetchAll();
 
@@ -122,7 +123,7 @@ $g->Add($lplot);
 
 // Yr
 
-$qYr = $db->prepare("SELECT date, (temperature_average_1 + temperature_average_2 + temperature_average_3 + temperature_average_4)/4.0 AS temperature_average, rain_amount_1 + rain_amount_2 + rain_amount_3 + rain_amount_4 AS rain_amount, wind_direction_1, wind_direction_2, wind_direction_3, wind_direction_4 FROM source_yr WHERE day=1 AND date > (CURRENT_DATE - INTERVAL '30 days') ORDER BY date ASC;");
+$qYr = $db->prepare("SELECT date, (temperature_average_1 + temperature_average_2 + temperature_average_3 + temperature_average_4)/4.0 AS temperature_average, rain_amount_1 + rain_amount_2 + rain_amount_3 + rain_amount_4 AS rain_amount, wind_direction_1, wind_direction_2, wind_direction_3, wind_direction_4 FROM source_yr WHERE day=$days AND date > (CURRENT_DATE - INTERVAL '30 days') ORDER BY date ASC;");
 $qYr->execute();
 $rowsYr = $qYr->fetchAll();
 

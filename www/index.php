@@ -10,13 +10,21 @@ require_once ('jpgraph/jpgraph_regstat.php');
 function windDirectionToAngle1($direction) {
   switch (strtolower($direction)) {
     case 'north': return 360;
+    case 'north-northwest': return 337.5;
     case 'northwest': return 315;
+    case 'west-northwest': return 292.5;
     case 'west': return 270;
+    case 'west-southwest': return 247.5;
     case 'southwest': return 225;
+    case 'south-southwest': return 202.5;
     case 'south': return 180;
+    case 'south-southeast': return 157.5;
     case 'southeast': return 135;
+    case 'east-southeast': return 112.5;
     case 'east': return 90;
+    case 'east-northeast': return 67.5;
     case 'northeast': return 45;
+    case 'north-northeast': return 22.5;
     default: die('Unknown wind direction: '.$direction);
   }
 }

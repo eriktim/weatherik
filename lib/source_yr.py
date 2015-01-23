@@ -74,7 +74,10 @@ class YrSource(Source):
     for ri in range(4):
       val = rows.eq(r + ri).find('td').eq(4).attr('title')
       match = re.search('([0-9]+) m/s from ([a-z\-]+)', val)
-      w['wind_speed_' + str(ri + 1)] = match.group(1)
-      w['wind_direction_' + str(ri + 1)] = match.group(2)
+      if not match:
+        sys.stderr.write('No match for \'' + val + '\'\n')
+      else:
+        w['wind_speed_' + str(ri + 1)] = match.group(1)
+        w['wind_direction_' + str(ri + 1)] = match.group(2)
 
     return w

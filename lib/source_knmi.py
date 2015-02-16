@@ -68,7 +68,7 @@ class KNMISource(Source):
     w['sunshine_relative'] = self.__numeric(rows.eq(8).find('td').eq(1).text())
 
     w['sky_coverage'] = self.__numeric(rows.eq(9).find('td').eq(1).text())
-    w['sky_visibiliy'] = self.__numeric(rows.eq(11).find('td').eq(1).text())
+    w['sky_visibiliy'] = self.__numeric(rows.eq(11).find('td').eq(1).text().lstrip('<'))
 
     w['wind_speed_average'] = self.__numeric(rows.eq(7).find('td').eq(6).text())
     w['wind_speed_maximum_average'] = self.__numeric(rows.eq(8).find('td').eq(6).text())

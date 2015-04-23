@@ -77,6 +77,8 @@ class YrSource(Source):
       if not match:
         if ' 0 m/s' in val:
           w['wind_speed_' + str(ri + 1)] = 0
+        elif ' 1 m/s' in val:
+          w['wind_speed_' + str(ri + 1)] = 1
         else:
           sys.stderr.write('No match for \'' + val + '\'\n')
       else:
